@@ -1,24 +1,36 @@
 import './style.css'
 import { renderDashboard } from "./dashboard";
 import { renderLogin } from "./login";
+import { renderUserDashboard } from './user';
 
 const routes = {
-    "/" : renderLogin,
-    "/dashboard" : renderDashboard 
+    "/": renderLogin,
+    "/dashboard": renderDashboard,
+    "/user": renderUserDashboard
 }
 
 const location = window.location.pathname
 
+export function renderPage(path) {
+    const userString = localStorage.getItem("user");
 
-export function renderPage(path){
-
-    if (localStorage.getItem("user") === null) {
-       window.history.pushState({},"","/")
-        routes["/"]()
+    if (!userString) {
+        window.history.pushState({}, "", "/");
+        routes["/"]();
+        return;
     }
-    else{
-        window.history.pushState({},"",path)
-        routes[path]()}
+
+    const user = JSON.parse(userString);
+    const isAdmin = user.role === 'admin';
+
+    if (isAdmin) {
+        const targetPath = (path === "/" || path === "/user") ? "/dashboard" : path;
+        window.history.pushState({}, "", targetPath);
+        routes[targetPath]();
+    } else {
+        window.history.pushState({}, "", "/user");
+        routes["/user"]();
+    }
 }
 
-renderPage(location)
+renderPage(location);

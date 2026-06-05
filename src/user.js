@@ -1,5 +1,5 @@
 import './style.css'
-export function renderDashboard() {
+export function renderUserDashboard() {
     const app  = document.getElementById("app");
     const user = JSON.parse(localStorage.getItem("user"));
 
@@ -17,7 +17,12 @@ export function renderDashboard() {
                        border border-violet-400/20 px-3 py-1 rounded-full tracking-wider">
             ${user?.username || "user"} · ${user?.role || "user"}
           </span>
-          
+          <button id="darkmode-btn"
+                  class="text-xs font-semibold text-gray-400 border border-white/10
+                         px-4 py-1.5 rounded-lg cursor-pointer transition-all duration-200
+                         hover:border-violet-500/40 hover:text-violet-400 hover:bg-red-500/5">
+            Day/Nigth
+          </button>
           <button id="logout-btn"
                   class="text-xs font-semibold text-gray-400 border border-white/10
                          px-4 py-1.5 rounded-lg cursor-pointer transition-all duration-200
@@ -130,7 +135,6 @@ export function renderDashboard() {
 
     const reservationList = document.getElementById("reservation-list");
 
-    
 
     function updateStats() {
         const total   = reservations.length;
@@ -212,9 +216,6 @@ export function renderDashboard() {
                           <input data-id="${reservation.id}" value="${reservation.endHour}"
                    class="flex-1 hidden bg-violet-400/10 border border-violet-400/40 text-gray-100
                           text-sm px-3 py-1 rounded-lg outline-none reservation-endHour-input" />
-                          <input data-id="${reservation.id}" value="${reservation.approved}"
-                   class="flex-1 hidden bg-violet-400/10 border border-violet-400/40 text-gray-100
-                          text-sm px-3 py-1 rounded-lg outline-none reservation-approved-input" />
                             </div>
 
             <span class="hidden sm:inline font-mono text-[0.6rem] tracking-widest px-2.5 py-0.5 rounded-full
@@ -251,8 +252,7 @@ export function renderDashboard() {
     }
 
     
-
-
+    
 
     async function togglereservation(id) {
 
@@ -269,7 +269,7 @@ export function renderDashboard() {
       renderList();
     }
 
-    async function updatereservation(id, newTitle, newDate, newStartHour, newendHour, newReason, newapproved) {
+    async function updatereservation(id, newTitle, newDate, newStartHour, newendHour, newReason) {
       const res = await fetch(`${API}/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -277,8 +277,7 @@ export function renderDashboard() {
           date : newDate,
           startHour : newStartHour,
           endHour : newendHour,
-          reason : newReason,
-          approved : newapproved
+          reason : newReason
          })
       });
       if (!res.ok) return;
@@ -306,7 +305,6 @@ export function renderDashboard() {
             const item = reservationList.querySelector(`.reservation-item[data-id="${id}"]`);
             item.querySelector(`.reservation-text[data-id="${id}"]`).classList.add("hidden");
             item.querySelector(`.reservation-edit-input[data-id="${id}"]`).classList.remove("hidden");
-            item.querySelector(`.reservation-approved-input[data-id="${id}"]`).classList.remove("hidden");
             item.querySelector(`.reservation-date-input[data-id="${id}"]`).classList.remove("hidden");
             item.querySelector(`.reservation-startHour-input[data-id="${id}"]`).classList.remove("hidden");
             item.querySelector(`.reservation-endHour-input[data-id="${id}"]`).classList.remove("hidden");
@@ -318,7 +316,6 @@ export function renderDashboard() {
             item.querySelector(`.reservation-date-input[data-id="${id}"]`).focus();
             item.querySelector(`.reservation-startHour-input[data-id="${id}"]`).focus();
             item.querySelector(`.reservation-endHour-input[data-id="${id}"]`).focus();
-            item.querySelector(`.reservation-approved-input[data-id="${id}"]`).focus();
         }
 
         if (action === "save") {
@@ -332,10 +329,8 @@ export function renderDashboard() {
             const newStartHour = inputstartHour.value.trim();
             const inputendHour    = reservationList.querySelector(`.reservation-endHour-input[data-id="${id}"]`);
             const newendHour = inputendHour.value.trim();
-            const inputapproved    = reservationList.querySelector(`.reservation-approved-input[data-id="${id}"]`);
-            const newapproved = inputapproved.value.trim();
 
-            if (newTitle && newReason && newDate && newStartHour && newendHour && newapproved) await updatereservation(id, newTitle, newDate, newStartHour, newendHour, newReason, newapproved);
+            if (newTitle && newReason && newDate && newStartHour && newendHour) await updatereservation(id, newTitle, newDate, newStartHour, newendHour, newReason);
         }
 
         if (action === "delete") {

@@ -20,14 +20,27 @@
     }
   ],
   "reservations": [
-    { "id": "1",
+    {
+      "id": "1",
       "userId": "2",
       "title": "Room 101",
       "date": "2026-01-15",
       "startHour": "08:00",
       "endHour": "09:00",
       "reason": "Sprint Planning",
-      "completed": true
+      "completed": true,
+      "approved": "Approved"
+    },
+    {
+      "id": "3",
+      "userId": "1",
+      "title": "Room 108",
+      "date": "2026-01-20",
+      "startHour": "08:00",
+      "endHour": "09:00",
+      "reason": "QA Meeting",
+      "completed": false,
+      "approved": "Declined"
     },
     {
       "id": "2",
@@ -37,7 +50,18 @@
       "startHour": "10:00",
       "endHour": "11:00",
       "reason": "Daily Meeting",
-      "completed": false
+      "completed": false,
+      "approved": "Approved"
+    },
+    {
+      "id": "4",
+      "title": "Room 104",
+      "date": "2026-01-20",
+      "startHour": "9:00",
+      "endHour": "10:00",
+      "reason": "Final Meeting",
+      "completed": false,
+      "approved": "Approved"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
