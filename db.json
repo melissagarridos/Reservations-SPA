@@ -1,0 +1,44 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "diego",
+      "password": "1234",
+      "role": "user"
+    },
+    {
+      "id": "2",
+      "username": "melissa",
+      "password": "5678",
+      "role": "admin"
+    },
+    {
+      "id": "3",
+      "username": "eduardo",
+      "password": "1234",
+      "role": "user"
+    }
+  ],
+  "reservations": [
+    { "id": "1",
+      "userId": "2",
+      "title": "Room 101",
+      "date": "2026-01-15",
+      "startHour": "08:00",
+      "endHour": "09:00",
+      "reason": "Sprint Planning",
+      "completed": true
+    },
+    {
+      "id": "2",
+      "userId": "3",
+      "title": "Room 102",
+      "date": "2026-01-15",
+      "startHour": "10:00",
+      "endHour": "11:00",
+      "reason": "Daily Meeting",
+      "completed": false
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
